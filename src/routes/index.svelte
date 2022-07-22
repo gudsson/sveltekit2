@@ -10,11 +10,20 @@
 
 	let fileIdx = 0;
 
+	let component;
+
+	// 	let Chatbox;
+
+	// function loadChatbox() {
+	// 	import('./ChatBox.svelte').then(res => Chatbox = res.default)
+	// }
+
 	function nextComponent() {
 		if (fileIdx < fileNames.length - 1) {
 			fileIdx++;
 		} else fileIdx = 0;
 		console.log(fileIdx);
+		import(`${pathPrefix}/${fileNames[fileIdx]}`).then((res) => (component = res.default));
 	}
 </script>
 
@@ -41,7 +50,7 @@
 
 	<!-- <Component1 /> -->
 	{#await import(/* @vite-ignore */ `${pathPrefix}/${fileNames[fileIdx]}`) then value}
-		<svelte:component this={value.default} />
+		<svelte:component this={component} />
 	{/await}
 
 	<button on:click={nextComponent}>Next</button>
